@@ -1,71 +1,195 @@
-# prasang-file README
+# PRASANG File
 
-This is the README for your extension "prasang-file". After writing up a brief description, we recommend including the following sections.
+> Maximum repository understanding per token.
 
-## Features
+PRASANG generates an intelligent `PRASANG.md` file that helps AI models understand repositories faster and better.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Unlike tools that dump code, PRASANG compresses repository intelligence.
 
-For example if there is an image subfolder under your extension project workspace:
+Built for:
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+- ChatGPT
+- Claude
+- Cursor
+- Gemini
+- GitHub Copilot
 
 ---
 
-## Following extension guidelines
+## Why?
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+AI struggles with repositories.
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+Typical approaches either:
 
-## Working with Markdown
+- dump too much code
+- waste context window
+- miss architecture
+- lose conventions
+- hallucinate project structure
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+PRASANG solves this by generating a compressed, AI-optimized repository context layer.
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+Think:
 
-## For more information
+```txt
+Repository → Intelligence → PRASANG.md → Better AI understanding
+```
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+Instead of:
 
-**Enjoy!**
+```txt
+Repository → 100k lines of code → Context overload
+```
+
+---
+
+## What PRASANG Understands
+
+### Repository Identity
+
+Detects:
+
+- Repository type
+- Framework
+- Language
+- Package manager
+- Critical files
+
+Example:
+
+```md
+## Repository Identity
+
+Name: prasang-file
+Language: TypeScript
+Framework: VS Code Extension
+Repository Type: VS Code Extension
+```
+
+---
+
+### Dependency Intelligence
+
+Compresses dependencies into architecture signals.
+
+Example:
+
+```md
+## Dependency Intelligence
+
+### Core Stack
+- TypeScript
+- VS Code API
+- esbuild
+
+### Tooling
+- ESLint
+- VS Code Testing
+
+### Architectural Signals
+- TypeScript-first repository
+- Bundled build pipeline
+- VS Code Extension Runtime
+```
+
+---
+
+### Folder Intelligence
+
+PRASANG understands:
+
+- folder purpose
+- architectural role
+- confidence scoring
+- repository conventions
+- subsystem boundaries
+
+Example:
+
+```md
+### src/core
+
+Purpose: Repository analysis logic
+Role: Analysis Engine
+Confidence: 55%
+
+Signals
+- core logic convention
+- analysis file pattern
+```
+
+---
+
+### Architecture Compression
+
+Instead of feeding AI an entire codebase:
+
+```txt
+src/
+1000 files
+50000 lines
+```
+
+PRASANG compresses:
+
+```txt
+Architecture
+Subsystems
+Dependencies
+Roles
+Conventions
+Entry points
+```
+
+---
+
+## Current Capabilities
+
+- [x] Repository identity detection
+- [x] Framework detection
+- [x] Dependency intelligence
+- [x] Folder intelligence
+- [x] Architectural role mapping
+- [x] Confidence scoring
+- [x] Architecture compression
+- [ ] Entry point detection
+- [ ] Import graph intelligence
+- [ ] Blast radius analysis
+- [ ] Git intelligence
+- [ ] AST-aware repository cognition
+
+---
+
+## Philosophy
+
+PRASANG is **not a documentation generator**.
+
+It is a:
+
+> Repository Intelligence Engine
+
+Core principles:
+
+- Architecture aware
+- Dependency aware
+- Convention aware
+- AI optimized
+- Token optimized
+- Deterministic where possible
+
+---
+
+## Installation
+
+Coming soon.
+
+Currently under active development.
+
+---
+
+## Contributing
+
+Ideas, feedback, and contributions are welcome.
+
+If you find issues or have suggestions, open an issue.
