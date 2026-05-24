@@ -33,10 +33,175 @@
 - Bundled build pipeline
 - VS Code Extension Runtime
 
+
 ## Entry Points
 
-- src/extension.ts → VS Code extension activation entrypoint
-- src/commands/generatePrasangCommand.ts → command execution entrypoint
+### Runtime Entry (VS Code)
+
+- src/extension.ts  
+  VS Code extension activation entrypoint  
+  **Confidence:** 70%
+
+### Command Registry (VS Code)
+
+- package.json → contributes.commands  
+  Registers 1 VS Code command(s): Generate PRASANG File  
+  **Confidence:** 25%
+
+
+
+## System Relationships
+
+### Runtime Flow
+
+src/extension.ts
+→ src/commands/generatePrasangCommand.ts
+
+src/commands/generatePrasangCommand.ts
+→ src/core/createPrasangFile.ts
+
+src/core/createPrasangFile.ts
+→ src/core/analyzeBlastRadius.ts
+→ src/core/analyzeDependencies.ts
+→ src/core/analyzeEntryPoints.ts
+→ src/core/analyzeFolders.ts
+→ src/core/analyzeHighImpact.ts
+→ src/core/analyzeImports.ts
+→ src/core/analyzeRepository.ts
+
+src/core/analyzeBlastRadius.ts
+→ src/core/analyzeFolders.ts
+→ src/core/analyzeImports.ts
+
+src/core/analyzeEntryPoints.ts
+→ src/intelligence/confidenceEngine.ts
+
+src/core/analyzeFolders.ts
+→ src/intelligence/confidenceEngine.ts
+→ src/intelligence/folderTaxonomy.ts
+
+src/core/analyzeHighImpact.ts
+→ src/core/analyzeImports.ts
+
+
+## High Impact Files
+
+### Orchestrators
+
+- src/core/createPrasangFile.ts — imports 7 local modules: src/core/analyzeBlastRadius.ts, src/core/analyzeDependencies.ts, src/core/analyzeEntryPoints.ts, src/core/analyzeFolders.ts, src/core/analyzeHighImpact.ts, src/core/analyzeImports.ts, src/core/analyzeRepository.ts
+
+### Hubs
+
+- src/core/analyzeImports.ts — imported by 3 files: src/core/analyzeBlastRadius.ts, src/core/analyzeHighImpact.ts, src/core/createPrasangFile.ts
+
+### Central Engines
+
+- src/core/analyzeFolders.ts — imported by 2 files, imports 2 modules
+
+### Entry Points
+
+- src/extension.ts — root node, imports 1 module(s)
+
+
+## Blast Radius
+
+src/intelligence/confidenceEngine.ts
+
+**Direct Impact**
+- src/core/analyzeEntryPoints.ts (Repository analysis logic)
+- src/core/analyzeFolders.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/core/analyzeBlastRadius.ts (Repository analysis logic)
+- src/core/createPrasangFile.ts (Repository analysis logic)
+- src/extension.ts (Primary application source code)
+
+src/core/analyzeImports.ts
+
+**Direct Impact**
+- src/core/analyzeBlastRadius.ts (Repository analysis logic)
+- src/core/analyzeHighImpact.ts (Repository analysis logic)
+- src/core/createPrasangFile.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
+
+src/intelligence/folderTaxonomy.ts
+
+**Direct Impact**
+- src/core/analyzeFolders.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/core/analyzeBlastRadius.ts (Repository analysis logic)
+- src/core/createPrasangFile.ts (Repository analysis logic)
+- src/extension.ts (Primary application source code)
+
+src/core/analyzeFolders.ts
+
+**Direct Impact**
+- src/core/analyzeBlastRadius.ts (Repository analysis logic)
+- src/core/createPrasangFile.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
+
+src/core/analyzeBlastRadius.ts
+
+**Direct Impact**
+- src/core/createPrasangFile.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
+
+src/core/analyzeDependencies.ts
+
+**Direct Impact**
+- src/core/createPrasangFile.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
+
+src/core/analyzeEntryPoints.ts
+
+**Direct Impact**
+- src/core/createPrasangFile.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
+
+src/core/analyzeHighImpact.ts
+
+**Direct Impact**
+- src/core/createPrasangFile.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
+
+src/core/analyzeRepository.ts
+
+**Direct Impact**
+- src/core/createPrasangFile.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
+
+src/core/createPrasangFile.ts
+
+**Direct Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+
+**Indirect Impact**
+- src/extension.ts (Primary application source code)
+
 
 ## Folder Purpose Map
 
@@ -54,7 +219,7 @@
 
 **Purpose:** Primary application source code  
 **Role:** Application Root  
-**Confidence:** 40%  
+**Confidence:** 60%  
 
 **Subdomains**
 - commands
@@ -73,7 +238,7 @@
 
 **Purpose:** VS Code command orchestration  
 **Role:** Command Layer  
-**Confidence:** 75%  
+**Confidence:** 100%  
 
 **Signals**
 - command convention
@@ -85,7 +250,7 @@
 
 **Purpose:** Repository analysis logic  
 **Role:** Analysis Engine  
-**Confidence:** 55%  
+**Confidence:** 90%  
 
 **Signals**
 - core logic convention
@@ -105,7 +270,7 @@
 
 **Purpose:** Repository intelligence layer  
 **Role:** Intelligence Layer  
-**Confidence:** 50%  
+**Confidence:** 65%  
 
 **Signals**
 - intelligence convention
@@ -115,7 +280,7 @@
 
 **Purpose:** Testing infrastructure  
 **Role:** Testing  
-**Confidence:** 65%  
+**Confidence:** 80%  
 
 **Signals**
 - testing convention
