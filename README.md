@@ -422,7 +422,6 @@ Current focus areas, roughly ordered by priority:
 
 ## Contributing
 
-<<<<<<< HEAD
 Ideas, feedback, and contributions are welcome.
 
 If you find issues or have suggestions, open an issue.
