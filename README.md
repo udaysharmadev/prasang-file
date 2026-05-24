@@ -4,7 +4,7 @@
 
 **Repository intelligence for AI models.**
 
-Generate a single `PRASANG.md` that gives AI tools deep understanding of your codebase — without dumping code.
+Generate a single `PRASANG.md` that gives AI tools deep understanding of your codebase - without dumping code.
 
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-007ACC?logo=visualstudiocode&logoColor=white)](https://code.visualstudio.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -62,12 +62,10 @@ No prose. No filler. Every line exists because it helps an AI model make better 
 ### Repository Identity
 
 Detects the fundamental characteristics of your repository from `package.json`, config files, and project structure.
->>>>>>> d88c748 (feat: implement repository intelligence engine for PRASANG)
 
 ```md
 ## Repository Identity
 
-<<<<<<< HEAD
 Name: prasang-file
 Language: TypeScript
 Framework: VS Code Extension
@@ -97,7 +95,6 @@ Example:
 ### Architectural Signals
 - TypeScript-first repository
 - Bundled build pipeline
-<<<<<<< HEAD
 - VS Code Extension Runtime
 ```
 
