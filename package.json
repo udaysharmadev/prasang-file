@@ -1,21 +1,48 @@
 {
   "name": "prasang-file",
-  "displayName": "Prasang-File",
-  "description": "Repository intelligence engine for AI optimized code understanding",
-  "version": "0.0.1",
+  "displayName": "PRASANG File",
+  "description": "Generate intelligent PRASANG.md files through repository intelligence for AI-assisted development.",
+  "version": "0.1.0",
+  "publisher": "udaysharmadev",
+  "license": "MIT",
+  "icon": "assets/icon.png",
+  "homepage": "https://github.com/udaysharmadev/prasang-file",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/udaysharmadev/prasang-file"
+  },
+  "bugs": {
+    "url": "https://github.com/udaysharmadev/prasang-file/issues"
+  },
   "engines": {
     "vscode": "^1.120.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Programming Languages"
   ],
-  "activationEvents": [],
+  "keywords": [
+    "ai",
+    "cursor",
+    "claude",
+    "copilot",
+    "chatgpt",
+    "repository",
+    "repository-analysis",
+    "developer-tools",
+    "code-intelligence",
+    "context-engineering",
+    "productivity",
+    "vscode"
+  ],
+  
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "prasang-file.generatePrasang",
-        "title": "Generate PRASANG File"
+        "title": "Generate PRASANG File",
+        "category": "PRASANG"
       }
     ]
   },
