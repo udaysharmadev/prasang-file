@@ -52,6 +52,17 @@
 
 ## System Relationships
 
+### AnalyzeArchitecturePattern Flow
+
+src/core/analyzeArchitecturePattern.ts
+→ src/core/analyzeFolders.ts
+→ src/types/prasangTypes.ts
+
+src/core/analyzeFolders.ts
+→ src/core/analyzeImports.ts
+→ src/intelligence/confidenceEngine.ts
+→ src/intelligence/folderTaxonomy.ts
+
 ### Runtime Flow
 
 src/extension.ts
@@ -68,39 +79,45 @@ src/core/createPrasangFile.ts
 → src/core/analyzeHighImpact.ts
 → src/core/analyzeImports.ts
 → src/core/analyzeRepository.ts
+→ src/core/analyzeRepositorySummary.ts
 
 src/core/analyzeBlastRadius.ts
 → src/core/analyzeFolders.ts
-→ src/core/analyzeImports.ts
+→ src/types/prasangTypes.ts
 
 src/core/analyzeEntryPoints.ts
 → src/intelligence/confidenceEngine.ts
 
 src/core/analyzeFolders.ts
+→ src/core/analyzeImports.ts
 → src/intelligence/confidenceEngine.ts
 → src/intelligence/folderTaxonomy.ts
 
-src/core/analyzeHighImpact.ts
-→ src/core/analyzeImports.ts
+src/core/analyzeRepository.ts
+→ src/types/prasangTypes.ts
+
+### FileUtils Flow
+
+src/utils/fileUtils.ts
+→ src/types/prasangTypes.ts
 
 
 ## High Impact Files
 
 ### Orchestrators
 
-- src/core/createPrasangFile.ts — imports 7 local modules: src/core/analyzeBlastRadius.ts, src/core/analyzeDependencies.ts, src/core/analyzeEntryPoints.ts, src/core/analyzeFolders.ts, src/core/analyzeHighImpact.ts, src/core/analyzeImports.ts, src/core/analyzeRepository.ts
+- src/core/analyzeFolders.ts — imports 3 local modules: src/core/analyzeImports.ts, src/intelligence/confidenceEngine.ts, src/intelligence/folderTaxonomy.ts
+- src/core/createPrasangFile.ts — imports 8 local modules: src/core/analyzeBlastRadius.ts, src/core/analyzeDependencies.ts, src/core/analyzeEntryPoints.ts, src/core/analyzeFolders.ts, src/core/analyzeHighImpact.ts, src/core/analyzeImports.ts, src/core/analyzeRepository.ts, src/core/analyzeRepositorySummary.ts
 
 ### Hubs
 
-- src/core/analyzeImports.ts — imported by 3 files: src/core/analyzeBlastRadius.ts, src/core/analyzeHighImpact.ts, src/core/createPrasangFile.ts
-
-### Central Engines
-
-- src/core/analyzeFolders.ts — imported by 2 files, imports 2 modules
+- src/types/prasangTypes.ts — imported by 4 files: src/core/analyzeArchitecturePattern.ts, src/core/analyzeBlastRadius.ts, src/core/analyzeRepository.ts, src/utils/fileUtils.ts
 
 ### Entry Points
 
+- src/core/analyzeArchitecturePattern.ts — root node, imports 2 module(s)
 - src/extension.ts — root node, imports 1 module(s)
+- src/utils/fileUtils.ts — root node, imports 1 module(s)
 
 
 ## Blast Radius
@@ -113,19 +130,34 @@ src/intelligence/confidenceEngine.ts
 
 **Indirect Impact**
 - src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/core/analyzeArchitecturePattern.ts (Repository analysis logic)
 - src/core/analyzeBlastRadius.ts (Repository analysis logic)
+- src/core/createPrasangFile.ts (Repository analysis logic)
+- src/extension.ts (Primary application source code)
+
+src/types/prasangTypes.ts
+
+**Direct Impact**
+- src/core/analyzeArchitecturePattern.ts (Repository analysis logic)
+- src/core/analyzeBlastRadius.ts (Repository analysis logic)
+- src/core/analyzeRepository.ts (Repository analysis logic)
+- src/utils/fileUtils.ts (Shared helper utilities)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
 - src/core/createPrasangFile.ts (Repository analysis logic)
 - src/extension.ts (Primary application source code)
 
 src/core/analyzeImports.ts
 
 **Direct Impact**
-- src/core/analyzeBlastRadius.ts (Repository analysis logic)
-- src/core/analyzeHighImpact.ts (Repository analysis logic)
+- src/core/analyzeFolders.ts (Repository analysis logic)
 - src/core/createPrasangFile.ts (Repository analysis logic)
 
 **Indirect Impact**
 - src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/core/analyzeArchitecturePattern.ts (Repository analysis logic)
+- src/core/analyzeBlastRadius.ts (Repository analysis logic)
 - src/extension.ts (Primary application source code)
 
 src/intelligence/folderTaxonomy.ts
@@ -135,6 +167,7 @@ src/intelligence/folderTaxonomy.ts
 
 **Indirect Impact**
 - src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/core/analyzeArchitecturePattern.ts (Repository analysis logic)
 - src/core/analyzeBlastRadius.ts (Repository analysis logic)
 - src/core/createPrasangFile.ts (Repository analysis logic)
 - src/extension.ts (Primary application source code)
@@ -142,6 +175,7 @@ src/intelligence/folderTaxonomy.ts
 src/core/analyzeFolders.ts
 
 **Direct Impact**
+- src/core/analyzeArchitecturePattern.ts (Repository analysis logic)
 - src/core/analyzeBlastRadius.ts (Repository analysis logic)
 - src/core/createPrasangFile.ts (Repository analysis logic)
 
@@ -194,6 +228,15 @@ src/core/analyzeRepository.ts
 - src/commands/generatePrasangCommand.ts (VS Code command orchestration)
 - src/extension.ts (Primary application source code)
 
+src/core/analyzeRepositorySummary.ts
+
+**Direct Impact**
+- src/core/createPrasangFile.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
+
 src/core/createPrasangFile.ts
 
 **Direct Impact**
@@ -214,6 +257,15 @@ src/core/createPrasangFile.ts
 **Signals**
 - vscode convention
 - editor configuration
+
+### assets
+
+**Purpose:** Static project assets  
+**Role:** Asset Layer  
+**Confidence:** 40%  
+
+**Signals**
+- asset convention
 
 ### src
 
@@ -270,7 +322,7 @@ src/core/createPrasangFile.ts
 
 **Purpose:** Repository intelligence layer  
 **Role:** Intelligence Layer  
-**Confidence:** 65%  
+**Confidence:** 70%  
 
 **Signals**
 - intelligence convention
@@ -291,17 +343,19 @@ src/core/createPrasangFile.ts
 
 **Purpose:** Shared type definitions  
 **Role:** Shared Contracts  
-**Confidence:** 45%  
+**Confidence:** 55%  
 
 **Signals**
 - typescript convention
+- typescript files
 
 ### src/utils
 
 **Purpose:** Shared helper utilities  
 **Role:** Utility Layer  
-**Confidence:** 40%  
+**Confidence:** 50%  
 
 **Signals**
 - utility convention
+- typescript files
 

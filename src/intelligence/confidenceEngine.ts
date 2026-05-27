@@ -14,8 +14,8 @@ export interface ConfidenceResult {
 	dominantSignal: string; // the highest-weight evidence
 }
 
-// Maximum confidence
-const MAX_CONFIDENCE = 100;
+// Maximum confidence — never claim certainty
+const MAX_CONFIDENCE = 95;
 
 // Minimum confidence when any evidence exists
 const MIN_CONFIDENCE = 10;
@@ -75,9 +75,6 @@ export function computeConfidence(
 // =====================
 
 export const WEIGHTS = {
-	/** Folder name matches known taxonomy */
-	FOLDER_TAXONOMY: 30,
-
 	/** TypeScript files present in folder */
 	TYPESCRIPT_FILES: 10,
 

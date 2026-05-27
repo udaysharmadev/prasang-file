@@ -9,6 +9,7 @@ import { analyzeBlastRadius } from './analyzeBlastRadius';
 import type { ImportGraph } from './analyzeImports';
 import type { HighImpactFile } from './analyzeHighImpact';
 import type { BlastRadiusEntry } from './analyzeBlastRadius';
+import { analyzeRepositorySummary } from './analyzeRepositorySummary';
 
 export async function createPrasangFile() {
 	const workspaceFolders =
@@ -35,7 +36,14 @@ export async function createPrasangFile() {
 		await analyzeFolders();
 
 	const dependencyAnalysis =
-		await analyzeDependencies();
+	analyzeDependencies(
+		null,
+		[
+			'package.json',
+			'tsconfig.json',
+			'esbuild.js',
+		]
+	);
 
 	const entryPoints =
 		await analyzeEntryPoints();
@@ -52,6 +60,25 @@ export async function createPrasangFile() {
 			importGraph,
 			folderAnalysis
 		);
+
+	const repositorySummary =
+	analyzeRepositorySummary({
+		repositoryName:
+			repository.name,
+		entryPoints:
+			entryPoints.map(
+				(entry) => ({
+					path: entry.path,
+					role: entry.role,
+				})
+			),
+		highImpactFiles:
+	highImpactFiles.map(
+		(file) => ({
+			path: file.path,
+		})
+	),
+	});
 
 	const rootPath =
 		workspaceFolders[0].uri;
@@ -111,36 +138,12 @@ ${folder.signals
 			.join('\n');
 
 	const dependencySection =
-		dependencyAnalysis
-			? `## Dependency Intelligence
+	dependencyAnalysis
+		? `## Dependency Intelligence
 
-### Core Stack
-
-${
-	dependencyAnalysis.coreStack
-		.length
-		? dependencyAnalysis.coreStack
-				.map(
-					(dep: string) =>
-						`- ${dep}`
-				)
-				.join('\n')
-		: '- None'
-}
-
-### Tooling
-
-${
-	dependencyAnalysis.tooling
-		.length
-		? dependencyAnalysis.tooling
-				.map(
-					(tool: string) =>
-						`- ${tool}`
-				)
-				.join('\n')
-		: '- None'
-}
+${renderDependencyLayers(
+	dependencyAnalysis.layers
+)}
 
 ### Architectural Signals
 
@@ -150,14 +153,16 @@ ${
 		.length
 		? dependencyAnalysis.architecturalSignals
 				.map(
-					(signal: string) =>
+					(
+						signal: string
+					) =>
 						`- ${signal}`
 				)
 				.join('\n')
 		: '- None'
 }
 `
-			: '';
+		: '';
 
 	const entryPointSection =
 		entryPoints.length
@@ -184,8 +189,17 @@ ${entryPoints
 **Name:** ${repository.name}  
 **Language:** ${repository.language}  
 **Package Manager:** ${repository.packageManager}  
-**Framework:** ${repository.framework}  
+**Framework:** ${
+	'framework' in repository
+		? repository.framework
+		: 'Unknown'
+}  
 **Repository Type:** ${repository.repositoryType}
+
+## Repository Intelligence Summary
+
+${repositorySummary.summary}
+
 
 ## Critical Files
 
@@ -554,6 +568,79 @@ function renderBlastRadius(
 					`- ${affected.path} (${affected.context})`
 				);
 			}
+		}
+
+		lines.push('');
+	}
+
+	return lines.join('\n');
+}
+
+function renderDependencyLayers(
+	layers: {
+		layer: string;
+		name: string;
+	}[]
+): string {
+	if (layers.length === 0) {
+		return '';
+	}
+
+	const grouped = new Map<
+		string,
+		string[]
+	>();
+
+	for (const layer of layers) {
+		const existing =
+			grouped.get(
+				layer.layer
+			) ?? [];
+
+		existing.push(layer.name);
+
+		grouped.set(
+			layer.layer,
+			existing
+		);
+	}
+
+	const sectionTitles: Record<
+		string,
+		string
+	> = {
+		runtime: 'Runtime',
+		language:
+			'Language Layer',
+		build: 'Build Layer',
+		validation:
+			'Validation Layer',
+		testing:
+			'Testing Layer',
+		packageManager:
+			'Package Manager',
+	};
+
+	const lines: string[] = [];
+
+	for (const [
+		layerName,
+		items,
+	] of grouped.entries()) {
+		lines.push(
+			`### ${
+				sectionTitles[
+					layerName
+				] ?? layerName
+			}`
+		);
+
+		lines.push('');
+
+		for (const item of items) {
+			lines.push(
+				`- ${item}`
+			);
 		}
 
 		lines.push('');

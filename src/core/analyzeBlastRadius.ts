@@ -1,5 +1,8 @@
-import type { ImportGraph } from './analyzeImports';
+import type {
+	ImportGraphEnriched,
+} from './analyzeImports';
 import type { FolderAnalysis } from './analyzeFolders';
+import type { RiskLevel } from '../types/prasangTypes';
 
 // =====================
 // Types
@@ -7,6 +10,7 @@ import type { FolderAnalysis } from './analyzeFolders';
 
 export interface BlastRadiusEntry {
 	path: string;
+	riskLevel: RiskLevel;
 	directImpact: AffectedFile[];
 	indirectImpact: AffectedFile[];
 	totalAffected: number;
@@ -18,22 +22,45 @@ export interface AffectedFile {
 }
 
 // =====================
+// Risk thresholds
+// =====================
+
+/**
+ * Risk level thresholds based on total affected files.
+ * Deterministic: same totalAffected always produces same risk.
+ */
+function computeRiskLevel(
+	totalAffected: number
+): RiskLevel {
+	if (totalAffected >= 5) {
+		return 'CRITICAL';
+	}
+	if (totalAffected >= 3) {
+		return 'HIGH';
+	}
+	if (totalAffected >= 2) {
+		return 'MEDIUM';
+	}
+	return 'LOW';
+}
+
+// =====================
 // Main export
 // =====================
 
 /**
- * Compute blast radius with direct vs indirect separation.
+ * Compute blast radius with direct vs indirect separation
+ * and risk level classification.
  *
  * Direct impact: files that directly import the changed file (1 hop).
  * Indirect impact: files that transitively depend on the changed file (2+ hops).
  *
- * This prevents misrepresenting causality.
- * A file 4 hops away should never appear as a direct impact.
+ * Uses pre-computed reverse adjacency from enriched import graph.
  *
  * Only files with total affected >= minAffected are returned.
  */
 export function analyzeBlastRadius(
-	graph: ImportGraph,
+	graph: ImportGraphEnriched,
 	folderAnalysis: FolderAnalysis[],
 	minAffected = 2
 ): BlastRadiusEntry[] {
@@ -41,27 +68,9 @@ export function analyzeBlastRadius(
 		return [];
 	}
 
-	// Build reverse adjacency list:
-	// reverseAdj[target] = [sources that directly import target]
-	const reverseAdj = new Map<
-		string,
-		string[]
-	>();
-
-	for (const file of graph.files) {
-		reverseAdj.set(file, []);
-	}
-
-	for (const edge of graph.edges) {
-		const sources =
-			reverseAdj.get(edge.target) ?? [];
-
-		sources.push(edge.source);
-		reverseAdj.set(
-			edge.target,
-			sources
-		);
-	}
+	// Use pre-computed reverse adjacency from enriched graph
+	const reverseAdj =
+		graph.reverseAdjacency;
 
 	// Build folder context lookup
 	const folderContextMap =
@@ -97,6 +106,10 @@ export function analyzeBlastRadius(
 
 		results.push({
 			path: file,
+			riskLevel:
+				computeRiskLevel(
+					totalAffected
+				),
 			directImpact: [...direct]
 				.sort()
 				.map(toAffectedFile),

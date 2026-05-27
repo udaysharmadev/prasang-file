@@ -16,6 +16,25 @@ export interface ImportGraph {
 	edgeCount: number;
 }
 
+/**
+ * Enriched import graph with pre-computed lookup maps.
+ *
+ * Extends ImportGraph for backward compatibility.
+ * Downstream consumers (analyzeHighImpact, analyzeBlastRadius)
+ * can use the pre-computed maps instead of recomputing them.
+ */
+export interface ImportGraphEnriched
+	extends ImportGraph {
+	/** file → files that import it */
+	reverseAdjacency: Map<string, string[]>;
+	/** file → files it imports */
+	forwardAdjacency: Map<string, string[]>;
+	/** file → in-degree (number of files importing it) */
+	inDegreeMap: Map<string, number>;
+	/** file → out-degree (number of files it imports) */
+	outDegreeMap: Map<string, number>;
+}
+
 // =====================
 // Constants
 // =====================
@@ -30,6 +49,10 @@ const IGNORED_DIRS = new Set([
 	'out',
 	'coverage',
 	'.vscode',
+	'vendor',
+	'__pycache__',
+	'.cache',
+	'.parcel-cache',
 ]);
 
 const SOURCE_EXTENSIONS = new Set([
@@ -54,7 +77,7 @@ const RESOLVABLE_EXTENSIONS = [
 // Main export
 // =====================
 
-export async function analyzeImports(): Promise<ImportGraph> {
+export async function analyzeImports(): Promise<ImportGraphEnriched> {
 	const workspaceFolders =
 		vscode.workspace.workspaceFolders;
 
@@ -68,7 +91,10 @@ export async function analyzeImports(): Promise<ImportGraph> {
 	const sourceFiles =
 		await collectSourceFiles(rootUri, rootUri);
 
-	// Step 2: Parse imports from each file
+	// Step 2: Build file set ONCE for O(1) lookups
+	const fileSet = new Set(sourceFiles);
+
+	// Step 3: Parse imports from each file
 	const edges: ImportEdge[] = [];
 	const seenEdges = new Set<string>();
 
@@ -82,8 +108,7 @@ export async function analyzeImports(): Promise<ImportGraph> {
 			await parseFileImports(
 				fileUri,
 				filePath,
-				rootUri,
-				sourceFiles
+				fileSet
 			);
 
 		for (const edge of imports) {
@@ -96,19 +121,100 @@ export async function analyzeImports(): Promise<ImportGraph> {
 		}
 	}
 
-	// Step 3: Compute node count
+	// Step 4: Build enriched graph with pre-computed maps
+	return buildEnrichedGraph(
+		edges,
+		sourceFiles
+	);
+}
+
+// =====================
+// Graph enrichment
+// =====================
+
+/**
+ * Build the enriched graph with all pre-computed maps.
+ * Single O(E) pass over edges.
+ */
+function buildEnrichedGraph(
+	edges: ImportEdge[],
+	files: string[]
+): ImportGraphEnriched {
+	const forwardAdjacency = new Map<
+		string,
+		string[]
+	>();
+	const reverseAdjacency = new Map<
+		string,
+		string[]
+	>();
+	const inDegreeMap = new Map<
+		string,
+		number
+	>();
+	const outDegreeMap = new Map<
+		string,
+		number
+	>();
 	const allNodes = new Set<string>();
 
+	// Initialize all files with empty adjacency
+	for (const file of files) {
+		forwardAdjacency.set(file, []);
+		reverseAdjacency.set(file, []);
+		inDegreeMap.set(file, 0);
+		outDegreeMap.set(file, 0);
+	}
+
+	// Single pass over edges
 	for (const edge of edges) {
 		allNodes.add(edge.source);
 		allNodes.add(edge.target);
+
+		// Forward: source → target
+		const forward =
+			forwardAdjacency.get(
+				edge.source
+			) ?? [];
+		forward.push(edge.target);
+		forwardAdjacency.set(
+			edge.source,
+			forward
+		);
+
+		// Reverse: target ← source
+		const reverse =
+			reverseAdjacency.get(
+				edge.target
+			) ?? [];
+		reverse.push(edge.source);
+		reverseAdjacency.set(
+			edge.target,
+			reverse
+		);
+
+		// Degrees
+		outDegreeMap.set(
+			edge.source,
+			(outDegreeMap.get(edge.source) ??
+				0) + 1
+		);
+		inDegreeMap.set(
+			edge.target,
+			(inDegreeMap.get(edge.target) ??
+				0) + 1
+		);
 	}
 
 	return {
 		edges,
-		files: sourceFiles,
+		files,
 		nodeCount: allNodes.size,
 		edgeCount: edges.length,
+		forwardAdjacency,
+		reverseAdjacency,
+		inDegreeMap,
+		outDegreeMap,
 	};
 }
 
@@ -201,8 +307,7 @@ async function collectSourceFiles(
 async function parseFileImports(
 	fileUri: vscode.Uri,
 	sourceRelativePath: string,
-	rootUri: vscode.Uri,
-	knownFiles: string[]
+	fileSet: Set<string>
 ): Promise<ImportEdge[]> {
 	let content: string;
 
@@ -250,11 +355,11 @@ async function parseFileImports(
 			continue;
 		}
 
-		// Resolve to repo-relative path
+		// Resolve to repo-relative path (using pre-built fileSet)
 		const resolved = resolveImportPath(
 			sourceRelativePath,
 			specifier,
-			knownFiles
+			fileSet
 		);
 
 		if (resolved) {
@@ -324,15 +429,15 @@ function extractModuleSpecifier(
  *
  * Handles extensionless imports by trying known extensions.
  * Handles directory imports by trying /index.ts, /index.js, etc.
+ *
+ * Uses a pre-built Set<string> for O(1) lookups instead of
+ * creating a new Set on every call.
  */
 function resolveImportPath(
 	sourceRelativePath: string,
 	specifier: string,
-	knownFiles: string[]
+	fileSet: Set<string>
 ): string | null {
-	// Build the set for O(1) lookup
-	const fileSet = new Set(knownFiles);
-
 	// Get the directory of the source file
 	const sourceDir = getDirectory(
 		sourceRelativePath
@@ -425,11 +530,15 @@ function getDirectory(
 	return filePath.slice(0, lastSlash);
 }
 
-function emptyGraph(): ImportGraph {
+function emptyGraph(): ImportGraphEnriched {
 	return {
 		edges: [],
 		files: [],
 		nodeCount: 0,
 		edgeCount: 0,
+		forwardAdjacency: new Map(),
+		reverseAdjacency: new Map(),
+		inDegreeMap: new Map(),
+		outDegreeMap: new Map(),
 	};
 }
