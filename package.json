@@ -2,7 +2,7 @@
   "name": "prasang-file",
   "displayName": "PRASANG File",
   "description": "Generate intelligent PRASANG.md files through repository intelligence for AI-assisted development.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "udaysharmadev",
   "license": "MIT",
   "icon": "assets/icon.png",
