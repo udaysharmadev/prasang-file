@@ -99,6 +99,7 @@ export interface AIReasoningConfig {
 /** Parsed package.json data — read once, shared across analyzers */
 export interface PackageJsonData {
 	name?: string;
+	description?: string;
 	version?: string;
 	main?: string;
 	bin?: string | Record<string, string>;
