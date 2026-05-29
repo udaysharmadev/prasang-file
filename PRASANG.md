@@ -66,9 +66,10 @@ Low
 
 ### Key Risks
 - unclear architectural boundaries
+- src/types/prasangTypes.ts has critical blast radius (8 files)
 - src/intelligence/confidenceEngine.ts has critical blast radius (7 files)
-- src/types/prasangTypes.ts has critical blast radius (7 files)
 - createPrasangFile.ts has high orchestration coupling
+- prasangTypes.ts impacts multiple systems
 
 ### Strengths
 - strong folder organization
@@ -80,16 +81,23 @@ Low
 ```mermaid
 graph TD
 
-  core_createPrasangFile["src/core/createPrasangFile.ts"]
-  core_analyzeFolders["src/core/analyzeFolders.ts"]
-  types_prasangTypes["src/types/prasangTypes.ts"]
-  src_extension["src/extension.ts"]
-  utils_fileUtils["src/utils/fileUtils.ts"]
+  core_createPrasangFile["createPrasangFile.ts"]:::orchestrator
+  core_analyzeFolders["analyzeFolders.ts"]:::orchestrator
+  types_prasangTypes["prasangTypes.ts"]:::hub
+  src_extension["extension.ts"]:::entry
+  utils_fileUtils["fileUtils.ts"]:::entry
 
   core_createPrasangFile --> core_analyzeFolders
   core_createPrasangFile --> types_prasangTypes
   utils_fileUtils --> types_prasangTypes
+
+  classDef orchestrator fill:#ff6b6b,stroke:#c0392b,color:#fff
+  classDef hub fill:#4ecdc4,stroke:#16a085,color:#fff
+  classDef engine fill:#f39c12,stroke:#e67e22,color:#fff
+  classDef entry fill:#9b59b6,stroke:#8e44ad,color:#fff
 ```
+
+
 
 ## Repository Intelligence Summary
 
@@ -198,6 +206,7 @@ src/core/createPrasangFile.ts
 → src/core/analyzeImports.ts
 → src/core/analyzeRepository.ts
 → src/core/analyzeRepositorySummary.ts
+→ src/intelligence/aiAdvisor.ts
 → src/intelligence/frameworkFingerprinting.ts
 → src/types/prasangTypes.ts
 
@@ -220,6 +229,9 @@ src/core/analyzeFolders.ts
 src/core/analyzeRepository.ts
 → src/types/prasangTypes.ts
 
+src/intelligence/aiAdvisor.ts
+→ src/types/prasangTypes.ts
+
 ### FileUtils Flow
 
 src/utils/fileUtils.ts
@@ -231,11 +243,11 @@ src/utils/fileUtils.ts
 ### Orchestrators
 
 - src/core/analyzeFolders.ts — imports 3 local modules: src/core/analyzeImports.ts, src/intelligence/confidenceEngine.ts, src/intelligence/folderTaxonomy.ts
-- src/core/createPrasangFile.ts — imports 11 local modules: src/core/analyzeArchitecturePattern.ts, src/core/analyzeBlastRadius.ts, src/core/analyzeDependencies.ts, src/core/analyzeEntryPoints.ts, src/core/analyzeFolders.ts, src/core/analyzeHighImpact.ts, src/core/analyzeImports.ts, src/core/analyzeRepository.ts, src/core/analyzeRepositorySummary.ts, src/intelligence/frameworkFingerprinting.ts, src/types/prasangTypes.ts
+- src/core/createPrasangFile.ts — imports 12 local modules: src/core/analyzeArchitecturePattern.ts, src/core/analyzeBlastRadius.ts, src/core/analyzeDependencies.ts, src/core/analyzeEntryPoints.ts, src/core/analyzeFolders.ts, src/core/analyzeHighImpact.ts, src/core/analyzeImports.ts, src/core/analyzeRepository.ts, src/core/analyzeRepositorySummary.ts, src/intelligence/aiAdvisor.ts, src/intelligence/frameworkFingerprinting.ts, src/types/prasangTypes.ts
 
 ### Hubs
 
-- src/types/prasangTypes.ts — imported by 5 files: src/core/analyzeArchitecturePattern.ts, src/core/analyzeBlastRadius.ts, src/core/analyzeRepository.ts, src/core/createPrasangFile.ts, src/utils/fileUtils.ts
+- src/types/prasangTypes.ts — imported by 6 files: src/core/analyzeArchitecturePattern.ts, src/core/analyzeBlastRadius.ts, src/core/analyzeRepository.ts, src/core/createPrasangFile.ts, src/intelligence/aiAdvisor.ts, src/utils/fileUtils.ts
 
 ### Entry Points
 
@@ -244,6 +256,20 @@ src/utils/fileUtils.ts
 
 
 ## Blast Radius
+
+src/types/prasangTypes.ts
+
+**Direct Impact**
+- src/core/analyzeArchitecturePattern.ts (Repository analysis logic)
+- src/core/analyzeBlastRadius.ts (Repository analysis logic)
+- src/core/analyzeRepository.ts (Repository analysis logic)
+- src/core/createPrasangFile.ts (Repository analysis logic)
+- src/intelligence/aiAdvisor.ts (Repository intelligence layer)
+- src/utils/fileUtils.ts (Shared helper utilities)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
 
 src/intelligence/confidenceEngine.ts
 
@@ -256,19 +282,6 @@ src/intelligence/confidenceEngine.ts
 - src/core/analyzeArchitecturePattern.ts (Repository analysis logic)
 - src/core/analyzeBlastRadius.ts (Repository analysis logic)
 - src/core/createPrasangFile.ts (Repository analysis logic)
-- src/extension.ts (Primary application source code)
-
-src/types/prasangTypes.ts
-
-**Direct Impact**
-- src/core/analyzeArchitecturePattern.ts (Repository analysis logic)
-- src/core/analyzeBlastRadius.ts (Repository analysis logic)
-- src/core/analyzeRepository.ts (Repository analysis logic)
-- src/core/createPrasangFile.ts (Repository analysis logic)
-- src/utils/fileUtils.ts (Shared helper utilities)
-
-**Indirect Impact**
-- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
 - src/extension.ts (Primary application source code)
 
 src/core/analyzeImports.ts
@@ -361,6 +374,15 @@ src/core/analyzeRepository.ts
 - src/extension.ts (Primary application source code)
 
 src/core/analyzeRepositorySummary.ts
+
+**Direct Impact**
+- src/core/createPrasangFile.ts (Repository analysis logic)
+
+**Indirect Impact**
+- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
+- src/extension.ts (Primary application source code)
+
+src/intelligence/aiAdvisor.ts
 
 **Direct Impact**
 - src/core/createPrasangFile.ts (Repository analysis logic)
@@ -464,7 +486,7 @@ src/core/createPrasangFile.ts
 
 **Purpose:** Repository intelligence layer  
 **Role:** Intelligence Layer  
-**Confidence:** 70%  
+**Confidence:** 75%  
 
 **Signals**
 - intelligence convention

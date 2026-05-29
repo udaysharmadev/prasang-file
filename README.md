@@ -24,6 +24,12 @@ One command. Full architectural context. Zero token waste.
 
 ---
 
+## Demo
+
+https://github.com/udaysharmadev/prasang-file/assets/demo.mp4
+
+---
+
 ## The Problem
 
 AI models don't understand repositories. They understand text.
