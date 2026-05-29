@@ -5,8 +5,119 @@
 **Name:** prasang-file  
 **Language:** TypeScript  
 **Package Manager:** npm  
-**Framework:** VS Code Extension  
 **Repository Type:** VS Code Extension
+
+## Repository Snapshot
+
+**Type:** VS Code Extension
+
+**Primary Language:** TypeScript
+
+**Execution Model:** Command-driven extension runtime
+
+**Architecture:** Standard project structure
+
+**Primary Goal:** Generate intelligent PRASANG.md files through repository intelligence for AI-assisted development.
+
+## Framework Intelligence
+
+**Runtime:** VS Code Extension
+
+**Confidence:** 50%
+
+**Evidence**
+
+- @types/vscode in devDependencies
+- .vscodeignore in root
+
+**Language:** TypeScript
+
+**Build System**
+
+- esbuild
+- tsc (TypeScript compiler)
+
+**Validation**
+
+- ESLint
+- TypeScript compiler
+
+**Testing:** VS Code test harness
+
+**Package Manager:** npm
+
+
+## Repository Health
+
+**Architecture Clarity:**
+Weak
+
+**Coupling Risk:**
+High
+
+**Modularity:**
+Strong
+
+**AI Readiness:**
+Low
+
+**Repository Complexity:**
+Low
+
+### Key Risks
+- unclear architectural boundaries
+- src/intelligence/confidenceEngine.ts has critical blast radius (7 files)
+- src/types/prasangTypes.ts has critical blast radius (7 files)
+- createPrasangFile.ts has high orchestration coupling
+
+### Strengths
+- strong folder organization
+- low repository complexity
+
+
+## Architecture Flow
+
+```mermaid
+graph TD
+
+  core_createPrasangFile["src/core/createPrasangFile.ts"]
+  core_analyzeFolders["src/core/analyzeFolders.ts"]
+  types_prasangTypes["src/types/prasangTypes.ts"]
+  src_extension["src/extension.ts"]
+  utils_fileUtils["src/utils/fileUtils.ts"]
+
+  core_createPrasangFile --> core_analyzeFolders
+  core_createPrasangFile --> types_prasangTypes
+  utils_fileUtils --> types_prasangTypes
+```
+
+## Repository Intelligence Summary
+
+prasang-file follows a layered architecture focused on repository intelligence and AI-optimized code understanding.
+
+Execution begins in:
+- src/extension.ts
+
+Command orchestration delegates to:
+- package.json → contributes.commands
+
+Repository synthesis is centralized in:
+- src/core/createPrasangFile.ts
+
+Major responsibilities include:
+- dependency intelligence
+- folder intelligence
+- architecture detection
+- blast radius analysis
+
+Critical modules:
+- analyzeFolders.ts
+- createPrasangFile.ts
+- prasangTypes.ts
+
+Risk concentration:
+HIGH due to orchestration dependency centrality.
+
 
 ## Critical Files
 
@@ -16,16 +127,33 @@
 
 ## Dependency Intelligence
 
-### Core Stack
+### Runtime
+
+- VS Code Extension Runtime
+- Node.js
+
+### Language Layer
 
 - TypeScript
-- esbuild
-- VS Code API
 
-### Tooling
+### Build Layer
+
+- esbuild
+- tsc (TypeScript compiler)
+
+### Validation Layer
 
 - ESLint
-- VS Code Testing
+- TypeScript compiler
+
+### Testing Layer
+
+- VS Code test harness
+
+### Package Manager
+
+- npm
+
 
 ### Architectural Signals
 
@@ -303,7 +431,7 @@ src/core/createPrasangFile.ts
 
 **Purpose:** VS Code command orchestration  
 **Role:** Command Layer  
-**Confidence:** 100%  
+**Confidence:** 95%  
 
 **Signals**
 - command convention
@@ -315,11 +443,12 @@ src/core/createPrasangFile.ts
 
 **Purpose:** Repository analysis logic  
 **Role:** Analysis Engine  
-**Confidence:** 90%  
+**Confidence:** 95%  
 
 **Signals**
 - core logic convention
 - analysis file pattern
+- creation file pattern
 - typescript files
 
 ### src/generation
@@ -366,9 +495,10 @@ src/core/createPrasangFile.ts
 
 **Purpose:** Shared helper utilities  
 **Role:** Utility Layer  
-**Confidence:** 50%  
+**Confidence:** 70%  
 
 **Signals**
 - utility convention
+- utility file pattern
 - typescript files
 

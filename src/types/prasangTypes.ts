@@ -92,6 +92,16 @@ export interface AIReasoningConfig {
 	enabled: boolean;
 }
 
+/** Supported AI provider backends */
+export type AIProvider = 'gemini';
+
+/** Configuration for the AI Repository Advisor */
+export interface AIProviderConfig {
+	enabled: boolean;
+	provider: AIProvider;
+	apiKey: string;
+}
+
 // =====================
 // Shared Utility Types
 // =====================

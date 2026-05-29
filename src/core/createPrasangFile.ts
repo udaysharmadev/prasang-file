@@ -16,6 +16,11 @@ import type { HighImpactFile } from './analyzeHighImpact';
 import type { BlastRadiusEntry } from './analyzeBlastRadius';
 import type { FrameworkFingerprint, ArchitecturePattern } from '../types/prasangTypes';
 import { analyzeRepositorySummary } from './analyzeRepositorySummary';
+import {
+	getAIAdvisorSection,
+	getAIConfig,
+} from '../intelligence/aiAdvisor';
+import type { AIAdvisorContext } from '../intelligence/aiAdvisor';
 
 export async function createPrasangFile() {
 	const workspaceFolders =
@@ -236,6 +241,49 @@ ${entryPoints
 			highImpactFiles
 		);
 
+	// AI Repository Advisor (optional, non-blocking)
+	const aiConfig = getAIConfig();
+	const aiContext: AIAdvisorContext = {
+		repositoryName: repository.name,
+		language: repository.language,
+		repositoryType:
+			repository.repositoryType,
+		architecture:
+			topPattern?.name ??
+			'Standard project structure',
+		frameworkName:
+			frameworkFingerprints[0]?.name ??
+			'Unknown',
+		dependencyCount:
+			(dependencyAnalysis?.layers
+				?.length ?? 0),
+		architecturalSignals:
+			dependencyAnalysis
+				?.architecturalSignals ?? [],
+		highImpactFiles:
+			highImpactFiles.map((f) => ({
+				path: f.path,
+				category: f.category,
+			})),
+		blastRadiusRisks: blastRadius
+			.filter(
+				(b) =>
+					b.riskLevel === 'CRITICAL' ||
+					b.riskLevel === 'HIGH'
+			)
+			.map((b) => ({
+				path: b.path,
+				totalAffected: b.totalAffected,
+			})),
+		healthStrengths: [],
+		healthRisks: [],
+	};
+	const aiAdvisorSection =
+		await getAIAdvisorSection(
+			aiConfig,
+			aiContext
+		);
+
 	const initialContent = `# PRASANG
 
 ## Repository Identity
@@ -252,6 +300,8 @@ ${frameworkSection}
 ${healthSection}
 
 ${architectureFlowSection}
+
+${aiAdvisorSection}
 
 ## Repository Intelligence Summary
 
@@ -803,6 +853,18 @@ function renderArchitectureFlow(
 			selectedPaths.has(edge.target)
 	);
 
+	// Build category lookup for node styling
+	const categoryMap = new Map<
+		string,
+		string
+	>();
+	for (const file of selectedFiles) {
+		categoryMap.set(
+			file.path,
+			file.category
+		);
+	}
+
 	// Build the Mermaid diagram
 	const lines: string[] = [
 		'## Architecture Flow',
@@ -812,13 +874,20 @@ function renderArchitectureFlow(
 		'',
 	];
 
-	// Node declarations with labels
+	// Node declarations with filename-only labels and category classes
 	for (const file of selectedFiles) {
 		const nodeId = nodeIdMap.get(
 			file.path
 		)!;
+		const fileName = file.path
+			.split('/')
+			.pop()!;
+		const cssClass =
+			categoryToCssClass(
+				file.category
+			);
 		lines.push(
-			`  ${nodeId}["${file.path}"]`
+			`  ${nodeId}["${fileName}"]:::${cssClass}`
 		);
 	}
 
@@ -851,6 +920,20 @@ function renderArchitectureFlow(
 		);
 	}
 
+	// Style definitions for node categories
+	lines.push('');
+	lines.push(
+		'  classDef orchestrator fill:#ff6b6b,stroke:#c0392b,color:#fff'
+	);
+	lines.push(
+		'  classDef hub fill:#4ecdc4,stroke:#16a085,color:#fff'
+	);
+	lines.push(
+		'  classDef engine fill:#f39c12,stroke:#e67e22,color:#fff'
+	);
+	lines.push(
+		'  classDef entry fill:#9b59b6,stroke:#8e44ad,color:#fff'
+	);
 	lines.push('```');
 
 	return lines.join('\n');
@@ -896,6 +979,23 @@ function sanitizeMermaidId(
 		/[^a-zA-Z0-9_]/g,
 		'_'
 	);
+}
+
+/**
+ * Map a HighImpactCategory to a Mermaid CSS class name.
+ * Used by renderArchitectureFlow for color-coded node styling.
+ */
+function categoryToCssClass(
+	category: string
+): string {
+	const classMap: Record<string, string> = {
+		Orchestrator: 'orchestrator',
+		Hub: 'hub',
+		'Central Engine': 'engine',
+		'Entry Point': 'entry',
+	};
+
+	return classMap[category] ?? 'entry';
 }
 
 function renderSystemRelationships(

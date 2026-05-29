@@ -1,43 +1,58 @@
 <div align="center">
 
-# Prasang
+# PRASANG
 
-**Repository intelligence for AI models.**
+**Repository intelligence for AI-assisted development.**
 
-Generate a single `PRASANG.md` that gives AI tools deep understanding of your codebase - without dumping code.
+One command. Full architectural context. Zero token waste.
 
-[![VS Code](https://img.shields.io/badge/VS%20Code-Extension-007ACC?logo=visualstudiocode&logoColor=white)](https://code.visualstudio.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+<br />
+
+[![Marketplace](https://img.shields.io/visual-studio-marketplace/v/udaysharmadev.prasang-file?label=VS%20Code%20Marketplace&logo=visualstudiocode&logoColor=white&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=udaysharmadev.prasang-file)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/udaysharmadev.prasang-file?label=Installs&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=udaysharmadev.prasang-file)
+[![GitHub Stars](https://img.shields.io/github/stars/udaysharmadev/prasang-file?style=flat&logo=github&label=Stars&color=181717)](https://github.com/udaysharmadev/prasang-file)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+
+<br />
+
+[**Install from Marketplace →**](https://marketplace.visualstudio.com/items?itemName=udaysharmadev.prasang-file)
 
 </div>
+
+<br />
 
 ---
 
 ## The Problem
 
-AI models struggle with repositories.
+AI models don't understand repositories. They understand text.
 
-When you paste code into ChatGPT, Claude, or Cursor, the model sees text — not architecture. It doesn't know which files orchestrate the system, which modules are leaf dependencies, or where execution begins. The context window fills with syntax while the actual structure stays invisible.
+When you paste code into ChatGPT, Claude, Cursor, or Copilot, the model sees syntax — not architecture. It doesn't know which files orchestrate the system, which modules carry the highest blast radius, or where execution actually begins.
 
-Current approaches make this worse:
+The result: hallucinated imports, invented file structures, confidently wrong refactoring suggestions, and wasted context windows filled with irrelevant code.
 
-| Approach | What happens |
-|----------|-------------|
-| **Paste files manually** | You pick the wrong ones. The model hallucinates the rest. |
-| **Dump everything** (Repomix, etc.) | Context window fills with boilerplate. Signal drowns in noise. |
-| **Let the model guess** | It invents architecture. Confidently wrong. |
-| **Write docs** | They go stale. They describe intent, not structure. |
-
-The fundamental issue: **AI models need repository understanding, not repository text.**
-
-Architecture, dependency relationships, execution flow, blast radius, folder conventions — these are the things that prevent hallucination. And none of them survive a raw code paste.
+**The core issue is simple.** AI models need repository *understanding* — architecture, dependency relationships, execution flow, system boundaries — not repository *text*. And none of that survives a raw code paste.
 
 ---
 
-## What Prasang Does
+## Why Existing Approaches Fail
 
-Prasang analyzes your repository and generates a single `PRASANG.md` file that compresses structural intelligence into a format AI models can actually use.
+| Approach | Problem |
+|----------|---------|
+| **Paste files manually** | You pick the wrong ones. The model invents the rest. |
+| **Dump the entire repo** | Context window fills with boilerplate. Signal drowns in noise. |
+| **Use repo-to-text tools** | Concatenated source code without structural intelligence. Token-heavy, insight-light. |
+| **Let the model guess** | It invents architecture, dependencies, and relationships. Confidently wrong. |
+| **Write documentation** | Goes stale immediately. Describes intent, not structure. |
+
+Every approach either wastes tokens or loses architecture. PRASANG does neither.
+
+---
+
+## What PRASANG Does
+
+PRASANG analyzes your repository through static analysis and generates a single `PRASANG.md` file — a compressed structural intelligence document designed for AI consumption.
 
 ```
 Repository
@@ -49,210 +64,43 @@ PRASANG.md
 Better AI understanding
 ```
 
-The generated file is designed for one thing:
+The output is engineered for one thing:
 
 > **Maximum repository understanding per token.**
 
-No prose. No filler. Every line exists because it helps an AI model make better decisions about your codebase.
+No prose. No filler. Every line exists because it helps AI models make better decisions about your codebase. Paste `PRASANG.md` into any model's context window — ChatGPT, Claude, Cursor, Gemini, Copilot — and watch the quality of responses improve immediately.
 
 ---
 
-## What Prasang Understands
+## Features
 
 ### Repository Identity
 
-Detects the fundamental characteristics of your repository from `package.json`, config files, and project structure.
+Detects language, package manager, repository type, and critical configuration files from project structure.
 
-```md
-## Repository Identity
+### Framework Intelligence
 
-Name: prasang-file
-Language: TypeScript
-Framework: VS Code Extension
-Repository Type: VS Code Extension
-```
-
----
+Fingerprints your technology stack with weighted evidence scoring. Identifies runtime, build system, validation, testing, and package management layers — not just dependency names.
 
 ### Dependency Intelligence
 
-Compresses dependencies into architecture signals.
-
-Example:
-
-```md
-## Dependency Intelligence
-
-### Core Stack
-- TypeScript
-- React
-- Next.js
-
-### Tooling
-- ESLint
-- Prettier
-
-### Architectural Signals
-- TypeScript-first repository
-- Bundled build pipeline
-- VS Code Extension Runtime
-```
-
----
+Compresses `package.json` into architectural signals. Groups dependencies by stack layer. Surfaces patterns like bundled pipelines, TypeScript-first development, and runtime environments.
 
 ### Folder Intelligence
 
-PRASANG understands:
+Maps every directory to its architectural purpose, role, and confidence score using a 65+ entry taxonomy with weighted evidence. Identifies subsystem boundaries and domain separation.
 
-- folder purpose
-- architectural role
-- confidence scoring
-- repository conventions
-- subsystem boundaries
+### Entry Point Detection
 
-Example:
+Identifies runtime entry points, command registries, and execution roots through pattern matching and content analysis. Supports VS Code extensions, React, Next.js (App Router + Pages Router), Node.js, Express, Python, and more.
 
-```md
-### src/core
+### Import Graph Intelligence
 
-Purpose: Repository analysis logic
-Role: Analysis Engine
-Confidence: 55%
+Builds a complete directed dependency graph from local imports. Groups relationships by architectural flow, traced from root nodes through the import chain. No AST parser. No external dependencies. Deterministic.
 
-Signals
-- core logic convention
-- analysis file pattern
-```
+### High Impact File Classification
 
----
-
-### Architecture Compression
-
-Instead of feeding AI an entire codebase:
-
-```txt
-src/
-1000 files
-50000 lines
-```
-
-PRASANG compresses:
-
-```txt
-Architecture
-Subsystems
-Dependencies
-Roles
-Conventions
-Entry points
-```
-
----
-
-## Current Capabilities
-
-- [x] Repository identity detection
-- [x] Framework detection
-- [x] Dependency intelligence
-- [x] Folder intelligence
-- [x] Architectural role mapping
-- [x] Confidence scoring
-- [x] Architecture compression
-- [ ] Entry point detection
-- [ ] Import graph intelligence
-- [ ] Blast radius analysis
-- [ ] Git intelligence
-- [ ] AST-aware repository cognition
-
----
-
-## Philosophy
-
-PRASANG is **not a documentation generator**.
-
-It is a:
-
-> Repository Intelligence Engine
-
-Core principles:
-
-- Architecture aware
-- Dependency aware
-- Convention aware
-- AI optimized
-- Token optimized
-- Deterministic where possible
-- Server-side rendering
-```
-
-### Entry Points
-
-Detects runtime entrypoints, command registries, and execution roots through file pattern matching and content analysis. Filters out build artifacts — only source-level entrypoints are reported.
-
-Supports VS Code extensions, React, Next.js (App Router and Pages Router), Node.js, Express, and Python.
-
-```md
-## Entry Points
-
-### Runtime Entry (VS Code)
-- src/extension.ts
-  VS Code extension activation entrypoint
-  **Confidence:** 70%
-
-### Command Registry (VS Code)
-- package.json → contributes.commands
-  Registers 1 VS Code command(s): Generate PRASANG File
-  **Confidence:** 25%
-```
-
-### Folder Intelligence
-
-Maps every folder to its architectural purpose, role, and confidence score using a deterministic taxonomy with weighted evidence scoring.
-
-```md
-## Folder Purpose Map
-
-### src/core
-**Purpose:** Repository analysis logic
-**Role:** Analysis Engine
-**Confidence:** 90%
-
-**Signals**
-- core logic convention
-- analysis file pattern
-- typescript files
-```
-
-Confidence is computed from weighted evidence — folder naming conventions, file patterns, implementation density, subdomain coherence — not guesswork.
-
-### System Relationships
-
-Parses local import statements to build a directed dependency graph. Groups relationships by architectural flow, traced from root nodes through the import chain.
-
-```md
-## System Relationships
-
-### Runtime Flow
-
-src/extension.ts
-→ src/commands/generatePrasangCommand.ts
-
-src/commands/generatePrasangCommand.ts
-→ src/core/createPrasangFile.ts
-
-src/core/createPrasangFile.ts
-→ src/core/analyzeRepository.ts
-→ src/core/analyzeFolders.ts
-→ src/core/analyzeDependencies.ts
-→ src/core/analyzeEntryPoints.ts
-→ src/core/analyzeImports.ts
-```
-
-No AST parser. No external dependencies. Deterministic line-by-line import parsing that handles TypeScript, JavaScript, `require()`, and re-exports.
-
-### High Impact Files
-
-Classifies files by their structural role in the import graph:
+Classifies files by structural role in the import graph:
 
 | Category | Criteria | Meaning |
 |----------|----------|---------|
@@ -261,192 +109,230 @@ Classifies files by their structural role in the import graph:
 | **Central Engine** | High in-degree and out-degree | Both consumed and consuming |
 | **Entry Point** | Zero in-degree, positive out-degree | Root node — nothing imports it |
 
-```md
-## High Impact Files
+### Blast Radius Analysis
 
-### Orchestrators
-- src/core/createPrasangFile.ts — imports 7 local modules
+Computes which files are affected when a module changes. Separates **direct** (1-hop) from **indirect** (transitive) impact. Risk levels — Critical, High, Medium, Low — are assigned based on total downstream exposure.
 
-### Hubs
-- src/core/analyzeImports.ts — imported by 3 files
+### Architecture Visualization
 
-### Entry Points
-- src/extension.ts — root node, imports 1 module
-```
+Generates Mermaid diagrams directly inside `PRASANG.md`. Nodes are selected by centrality score and color-coded by structural role. Capped at 15 nodes for readability. Renders natively on GitHub.
 
-### Blast Radius
+### Repository Health
 
-For every file with significant downstream impact, Prasang computes which files are affected by a change — and separates **direct** from **indirect** impact to prevent overstating causality.
+Deterministic health assessment across five dimensions: Architecture Clarity, Coupling Risk, Modularity, AI Readiness, and Repository Complexity. Surfaces specific risks and strengths with file-level attribution.
 
-```md
-## Blast Radius
+### AI Repository Advisor
 
-src/intelligence/confidenceEngine.ts
-
-**Direct Impact**
-- src/core/analyzeEntryPoints.ts (Repository analysis logic)
-- src/core/analyzeFolders.ts (Repository analysis logic)
-
-**Indirect Impact**
-- src/core/createPrasangFile.ts (Repository analysis logic)
-- src/commands/generatePrasangCommand.ts (VS Code command orchestration)
-- src/extension.ts (Primary application source code)
-```
-
-Direct impact = files that directly import the changed file.
-Indirect impact = files affected through transitive dependency chains.
+Optional AI-powered engineering feedback. After deterministic analysis completes, PRASANG can send compressed context to the Gemini API for architectural recommendations — strengths, weaknesses, suggestions, and engineering risk assessment. Requires an API key. Graceful fallback when unavailable.
 
 ---
 
-## How It Differs from Code Dumping
+## Example Output
 
-| | Code dump tools | Prasang |
-|---|----------------|---------|
-| **Output** | Raw source files concatenated | Compressed structural intelligence |
-| **Token usage** | Fills context window with syntax | Maximizes understanding per token |
-| **Architecture** | Lost in the noise | Explicitly mapped |
-| **Relationships** | Not represented | Import graph with flow grouping |
-| **Impact analysis** | Not available | Direct + indirect blast radius |
-| **Determinism** | Varies | Same input → same output, always |
+### Framework Intelligence
 
-Prasang doesn't replace reading code. It gives AI models the structural context they need to reason about code they haven't seen.
+```md
+## Framework Intelligence
 
+**Runtime:** VS Code Extension
+**Confidence:** 50%
+
+**Evidence**
+- @types/vscode in devDependencies
+- .vscodeignore in root
+
+**Language:** TypeScript
+**Build System:** esbuild, tsc (TypeScript compiler)
+**Validation:** ESLint, TypeScript compiler
+**Testing:** VS Code test harness
+**Package Manager:** npm
+```
+
+### Architecture Flow
+
+```mermaid
+graph TD
+
+  core_createPrasangFile["createPrasangFile.ts"]:::orchestrator
+  core_analyzeFolders["analyzeFolders.ts"]:::hub
+  types_prasangTypes["prasangTypes.ts"]:::hub
+  src_extension["extension.ts"]:::entry
+
+  core_createPrasangFile --> core_analyzeFolders
+  core_createPrasangFile --> types_prasangTypes
+
+  classDef orchestrator fill:#ff6b6b,stroke:#c0392b,color:#fff
+  classDef hub fill:#4ecdc4,stroke:#16a085,color:#fff
+  classDef engine fill:#f39c12,stroke:#e67e22,color:#fff
+  classDef entry fill:#9b59b6,stroke:#8e44ad,color:#fff
+```
+
+### Repository Health
+
+```md
+## Repository Health
+
+**Architecture Clarity:** Weak
+**Coupling Risk:** High
+**Modularity:** Strong
+**AI Readiness:** Low
+**Repository Complexity:** Low
+
+### Key Risks
+- confidenceEngine.ts has critical blast radius (7 files)
+- prasangTypes.ts has critical blast radius (7 files)
+- createPrasangFile.ts has high orchestration coupling
+
+### Strengths
+- strong folder organization
+- low repository complexity
+```
+
+### AI Repository Advisor
+
+```md
+## AI Repository Advisor
+
+**Strengths**
+- strong folder separation with clear domain boundaries
+- deterministic architecture with no runtime AI dependencies
+- clean modular analyzers with single responsibilities
+
+**Weaknesses**
+- createPrasangFile.ts has high orchestration coupling (11 imports)
+- framework intelligence can be generalized beyond Node.js
+
+**Suggestions**
+1. reduce orchestration fan-out by extracting section renderers
+2. isolate repository intelligence contracts into interfaces
+3. improve framework abstraction for multi-language support
+
+**Engineering Risk:** Medium
+```
 
 ---
 
 ## Installation
 
-Coming soon.
-
-Currently under active development.
-
 ### VS Code Marketplace
 
-> Coming soon. The extension is in active development.
+Install directly from the marketplace:
 
-### From Source
+**[PRASANG File on VS Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=udaysharmadev.prasang-file)**
 
-```bash
-git clone https://github.com/yourusername/prasang-file.git
-cd prasang-file
-npm install
-npm run compile
+### Quick Install
+
+Open VS Code and run:
+
+```
+ext install udaysharmadev.prasang-file
 ```
 
-Then press `F5` in VS Code to launch the Extension Development Host.
+Or search **"PRASANG"** in the VS Code Extensions panel.
 
-### Usage
+---
 
-1. Open a repository in VS Code
-2. Open the Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
+## Usage
+
+1. Open any repository in VS Code
+2. Open the Command Palette — `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux)
 3. Run **Generate PRASANG File**
-4. A `PRASANG.md` file is created at the repository root
+4. A `PRASANG.md` file is generated at the repository root
 
-Paste the contents of `PRASANG.md` into any AI model's context window before asking questions about the repository.
+Paste the contents into any AI model's context window before asking questions about the codebase.
 
----
+### AI Advisor (Optional)
 
-## Development
+To enable AI-powered recommendations, configure in VS Code Settings:
 
-```bash
-# Install dependencies
-npm install
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `prasang.ai.enabled` | `false` | Enable AI Repository Advisor |
+| `prasang.ai.provider` | `"gemini"` | AI provider |
+| `prasang.ai.apiKey` | `""` | Your API key |
 
-# Type check
-npm run check-types
-
-# Lint
-npm run lint
-
-# Full build (type check + lint + bundle)
-npm run compile
-
-# Watch mode
-npm run watch
-
-# Run tests
-npm test
-```
-
-### Project Structure
-
-```
-src/
-├── commands/
-│   └── generatePrasangCommand.ts    # VS Code command handler
-├── core/
-│   ├── analyzeBlastRadius.ts        # Reverse transitive impact analysis
-│   ├── analyzeDependencies.ts       # package.json dependency intelligence
-│   ├── analyzeEntryPoints.ts        # Pattern-based entry detection
-│   ├── analyzeFolders.ts            # Folder purpose and confidence scoring
-│   ├── analyzeHighImpact.ts         # Graph-based file classification
-│   ├── analyzeImports.ts            # Import graph construction
-│   ├── analyzeRepository.ts         # Repository identity detection
-│   └── createPrasangFile.ts         # Orchestrator + PRASANG.md generation
-├── intelligence/
-│   ├── confidenceEngine.ts          # Weighted evidence scoring
-│   └── folderTaxonomy.ts            # Folder naming convention database
-└── extension.ts                     # VS Code extension entry
-```
+Without an API key, all deterministic features work normally. The AI section displays a graceful fallback message.
 
 ---
 
-## Design Principles
+## Architecture Philosophy
 
-**Deterministic.** Same repository → same output. No randomness, no LLM calls, no network requests.
+PRASANG is built on three principles:
 
-**No AST (yet).** Import parsing and structural analysis use line-by-line heuristics. This covers the vast majority of real-world TypeScript and JavaScript without introducing parser dependencies.
+**Deterministic first.** Same repository, same output, every time. No randomness. Core analysis requires zero network requests, zero LLM calls, zero external services.
 
-**Evidence-based confidence.** Confidence scores are computed from weighted evidence items — taxonomy matches, file patterns, implementation density, subdomain coherence. Every score is traceable and debuggable.
+**Intelligence over dumping.** PRASANG doesn't concatenate source files. It computes architecture patterns, dependency graphs, blast radius, entry points, and folder semantics — then compresses them into a format optimized for AI consumption.
 
-**Accuracy over impressiveness.** Blast radius separates direct from indirect impact. Confidence never claims 100% without strong evidence. Build artifacts are filtered from entry points. The system is designed to minimize hallucination risk, not maximize output volume.
+**AI as optional enrichment.** The AI Repository Advisor exists as an enhancement layer. It receives compressed deterministic context — not raw code. It enriches output; it never gates it. If the API is unavailable, nothing breaks.
 
-**Token-optimized output.** The arrow notation for system relationships, the compressed dependency intelligence, the evidence-based folder map — every formatting choice prioritizes information density.
+---
+
+## How It Differs From Code Dumping
+
+|  | Repo-to-text tools | PRASANG |
+|---|---|---|
+| **Output** | Raw source files concatenated | Compressed structural intelligence |
+| **Token usage** | Fills context window with syntax | Maximizes understanding per token |
+| **Architecture** | Lost in the noise | Explicitly mapped with Mermaid diagrams |
+| **Relationships** | Not represented | Directed import graph with flow grouping |
+| **Impact analysis** | Not available | Direct + indirect blast radius per file |
+| **Health metrics** | Not available | Five-dimension deterministic health scoring |
+| **Determinism** | Varies | Same input → same output, always |
 
 ---
 
 ## Roadmap
 
-Current focus areas, roughly ordered by priority:
-
-- [ ] **Confidence calibration** — continued tuning of evidence weights across diverse repository types
-- [ ] **Multi-language entry detection** — Go, Rust, Java entry patterns
-- [ ] **Architecture pattern recognition** — monorepo detection, microservice boundaries, API/client separation
-- [ ] **Git intelligence** — change frequency analysis, ownership signals, recently modified hotspots
-- [ ] **AST cognition layer** — export analysis, function signature extraction, type relationship mapping
-- [ ] **Configuration intelligence** — environment detection, feature flags, build configuration awareness
-- [ ] **VS Code Marketplace publishing** — packaging, icons, marketplace listing
-
+- [x] Repository identity detection
+- [x] Framework fingerprinting with evidence scoring
+- [x] Dependency intelligence with stack layer grouping
+- [x] Folder intelligence with 65+ entry taxonomy
+- [x] Entry point detection (VS Code, React, Next.js, Node.js, Python)
+- [x] Import graph construction with enriched adjacency maps
+- [x] High impact file classification (Orchestrator, Hub, Central Engine, Entry Point)
+- [x] Blast radius analysis with direct/indirect separation
+- [x] Architecture pattern detection (Layered, MVC, Feature-First, Clean, Hexagonal)
+- [x] Mermaid architecture visualization with category-based node styling
+- [x] Repository health scoring (5 dimensions)
+- [x] AI Repository Advisor (Gemini integration)
+- [ ] Multi-language support — Go, Rust, Java, Python entry patterns and import graphs
+- [ ] Git intelligence — change frequency, ownership signals, modification hotspots
+- [ ] AST cognition layer — export analysis, function signatures, type relationship mapping
+- [ ] Monorepo intelligence — cross-package dependency mapping and workspace analysis
+- [ ] Configuration intelligence — environment detection, feature flags, build awareness
+- [ ] Custom output profiles — configurable sections and compression levels
 
 ---
 
 ## Contributing
 
-Ideas, feedback, and contributions are welcome.
-
-If you find issues or have suggestions, open an issue.
 Contributions are welcome. If you're interested in improving repository intelligence:
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/improvement`)
-3. Make your changes with production-grade TypeScript
-4. Ensure `npm run compile` passes (type check + lint + build)
-5. Submit a pull request
+2. Create a feature branch
+3. Ensure `npm run package` passes (type check + lint + production build)
+4. Submit a pull request
 
-Please keep changes deterministic and debuggable. Avoid introducing external parser dependencies unless strictly necessary.
+Please keep changes deterministic and debuggable. Avoid introducing external parser dependencies unless strictly necessary. TypeScript strict mode is enforced.
 
----
-
-## License
-
-MIT
+[Open an issue →](https://github.com/udaysharmadev/prasang-file/issues)
 
 ---
 
 <div align="center">
+
 <br />
 
-**Prasang** — compress repository intelligence, not repository text.
+**If PRASANG helps your AI workflow, [give it a star on GitHub](https://github.com/udaysharmadev/prasang-file).**
+
+It helps others discover the project.
+
+<br />
+
+[**Install from VS Code Marketplace →**](https://marketplace.visualstudio.com/items?itemName=udaysharmadev.prasang-file)
+
+<br />
+
+MIT License
 
 </div>
-

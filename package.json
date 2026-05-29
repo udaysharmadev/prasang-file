@@ -44,7 +44,28 @@
         "title": "Generate PRASANG File",
         "category": "PRASANG"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "PRASANG File",
+      "properties": {
+        "prasang.ai.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable AI-powered repository advisor in PRASANG.md output"
+        },
+        "prasang.ai.provider": {
+          "type": "string",
+          "enum": ["gemini"],
+          "default": "gemini",
+          "description": "AI provider for repository analysis"
+        },
+        "prasang.ai.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for the selected AI provider"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
