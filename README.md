@@ -26,7 +26,7 @@ One command. Full architectural context. Zero token waste.
 
 ## Demo
 
-https://github.com/udaysharmadev/prasang-file/assets/demo.mp4
+<video src="./assets/demo.mp4" controls width="100%"></video>
 
 ---
 
