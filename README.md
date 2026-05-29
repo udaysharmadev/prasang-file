@@ -26,7 +26,7 @@ One command. Full architectural context. Zero token waste.
 
 ## Demo
 
-[Watch PRASANG Demo](https://raw.githubusercontent.com/udaysharmadev/prasang-file/main/assets/demo.mp4)
+[Click to Watch PRASANG Demo](https://raw.githubusercontent.com/udaysharmadev/prasang-file/main/assets/demo.mp4)
 
 ---
 
